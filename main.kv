@@ -1,0 +1,29 @@
+<MainScreen>
+    name: "main"
+
+    FLoatLayout:
+
+        Label:
+            id:ODRIVE
+            text:"ODRIVE MANAGER"
+            size_hint: None, None
+            font_size: 75
+            bold: True
+            center_x: root.width *0.5
+            center_y: root.height *0.85
+            color:1, 1, 1, 1
+            outline_width: self.font_size *0.1
+            outline_color:0, 0, 0, 1
+
+        DPEAButton:
+            id:test
+            text: "test"
+            size: 300, 250
+            font_size: 50
+            bold: True
+            center_x: root.width * .5
+            center_y: root.height * .6
+            color: 1.2, 0, .5, .8
+            outline_width: self.font_size * 0.1
+            outline_color: 0, 0, 0, 1
+            on_press: root.test()
