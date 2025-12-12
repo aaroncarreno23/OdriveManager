@@ -1,29 +1,81 @@
 <MainScreen>
     name: "main"
 
-    FLoatLayout:
+    FloatLayout:
 
         Label:
             id:ODRIVE
             text:"ODRIVE MANAGER"
             size_hint: None, None
-            font_size: 75
+            font_size: 65
             bold: True
             center_x: root.width *0.5
-            center_y: root.height *0.85
+            center_y: root.height *0.9
             color:1, 1, 1, 1
             outline_width: self.font_size *0.1
             outline_color:0, 0, 0, 1
 
         DPEAButton:
             id:test
-            text: "test"
-            size: 300, 250
-            font_size: 50
+            text: "Test"
+            size: 100, 100
+            font_size: 35
             bold: True
             center_x: root.width * .5
-            center_y: root.height * .6
+            center_y: root.height * .1
             color: 1.2, 0, .5, .8
-            outline_width: self.font_size * 0.1
+            outline_width: self.font_size * 0.05
             outline_color: 0, 0, 0, 1
             on_press: root.test()
+
+        DPEAButton:
+            id:quit
+            text:"X"
+            size:30, 30
+            font_size:30
+            bold: True
+            center_x: root.width * 0.95
+            center_y: root.height * 0.95
+            color: 1.2, 0, 0.5, 1
+            outline_width: self.font_size * 0.1
+            outline_color: 0, 0, 0, 1
+            on_press: root.quit_main()
+
+        DPEAButton:
+            id: sliders
+            text:"Sliders"
+            size: 175, 160
+            font_size: 50
+            bold: True
+            center_x: root.width *0.25
+            center_y: root.height * 0.4
+            color: 1.2, 0, 0.5, 0.8
+            outline_width: self.font_size * 0.05
+            outline_color: 0, 0, 0, 1
+            on_press: root.to_sliders()
+
+        DPEAButton:
+            id: buttons
+            text:"Buttons"
+            size: 175, 160
+            font_size: 50
+            bold: True
+            center_x: root.width *0.5
+            center_y: root.height * 0.4
+            color: 1.2, 0, 0.5, 0.8
+            outline_width: self.font_size * 0.05
+            outline_color: 0, 0, 0, 1
+            on_press: root.to_buttons()
+
+        DPEAButton:
+            id:inputs
+            text:"Inputs"
+            size: 175, 160
+            font_size: 50
+            bold: True
+            center_x: root.width *0.75
+            center_y: root.height * 0.4
+            color: 1.2, 0, 0.5, 0.8
+            outline_width: self.font_size * 0.05
+            outline_color: 0, 0, 0, 1
+            on_press: root.to_inputs()

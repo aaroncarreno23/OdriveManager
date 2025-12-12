@@ -1,0 +1,146 @@
+<ButtonsScreen>
+    name: "buttons_screen"
+
+    FloatLayout:
+
+        Label:
+            id:ODRIVE
+            text:"ODRIVE MANAGER"
+            size_hint: None, None
+            font_size: 65
+            bold: True
+            center_x: root.width *0.5
+            center_y: root.height *0.9
+            color:1, 1, 1, 1
+            outline_width: self.font_size *0.1
+            outline_color:0, 0, 0, 1
+
+        DPEAButton:
+            id:quit
+            text:"X"
+            size:30, 30
+            font_size:30
+            bold: True
+            center_x: root.width * 0.95
+            center_y: root.height * 0.95
+            color: 1.2, 0, 0.5, 1
+            outline_width: self.font_size * 0.1
+            outline_color: 0, 0, 0, 1
+            on_press: root.quit_main()
+
+        DPEAButton:
+            id:menu
+            text: "Menu"
+            size: 65, 65
+            font_size: 20
+            bold: True
+            center_x: root.width * .9
+            center_y: root.height * .1
+            color: 1.2, 0, .5, .8
+            outline_width: self.font_size * 0.05
+            outline_color: 0, 0, 0, 1
+            on_press: root.to_menu()
+
+        DPEAButton:
+            id:home
+            text:"Home"
+            size:120, 120
+            font_size:40
+            bold: True
+            center_x: root.width * 0.2
+            center_y: root.height * 0.6
+            color: 1.2, 0, 0.5, 0.8
+            outline_width: self.font_size * 0.05
+            outline_color: 0, 0, 0, 1
+            on_press: root.home_motor()
+
+        DPEAButton:
+            id:pin_read
+            text:"Pin Read"
+            size:120, 120
+            font_size:25
+            bold: True
+            center_x: root.width * 0.4
+            center_y: root.height * 0.6
+            color: 1.2, 0, 0.5, 0.8
+            outline_width: self.font_size * 0.05
+            outline_color: 0, 0, 0, 1
+            on_press: root.digital_read_pin()
+
+        DPEAButton:
+            id:reboot
+            text:"Reboot"
+            size:120, 120
+            font_size:35
+            bold: True
+            center_x: root.width * 0.6
+            center_y: root.height * 0.6
+            color: 1.2, 0, 0.5, 0.8
+            outline_width: self.font_size * 0.05
+            outline_color: 0, 0, 0, 1
+            on_press: root.reboot()
+
+        DPEAButton:
+            id:calibrate
+            text:"Calibrate"
+            size:120, 120
+            font_size:30
+            bold: True
+            center_x: root.width * 0.8
+            center_y: root.height * 0.6
+            color: 1.2, 0, 0.5, 0.8
+            outline_width: self.font_size * 0.05
+            outline_color: 0, 0, 0, 1
+            on_press: root.calibrate()
+
+        DPEAButton:
+            id:pre-calibrate
+            text:"Pre-Calibrate"
+            size:120, 120
+            font_size:20
+            bold: True
+            center_x: root.width * 0.2
+            center_y: root.height * 0.3
+            color: 1.2, 0, 0.5, 0.8
+            outline_width: self.font_size * 0.05
+            outline_color: 0, 0, 0, 1
+            on_press: root.pre-calibrate()
+
+        DPEAButton:
+            id:save_config
+            text:"Save Config"
+            size:120, 120
+            font_size:20
+            bold: True
+            center_x: root.width * 0.4
+            center_y: root.height * 0.3
+            color: 1.2, 0, 0.5, 0.8
+            outline_width: self.font_size * 0.05
+            outline_color: 0, 0, 0, 1
+            on_press: root.save_config()
+
+        DPEAButton:
+            id:idle
+            text:"Idle"
+            size:120, 120
+            font_size:30
+            bold: True
+            center_x: root.width * 0.6
+            center_y: root.height * 0.3
+            color: 1.2, 0, 0.5, 0.8
+            outline_width: self.font_size * 0.05
+            outline_color: 0, 0, 0, 1
+            on_press: root.idle()
+
+        DPEAButton:
+            id:blank
+            text:"Blank"
+            size:120, 120
+            font_size:30
+            bold: True
+            center_x: root.width * 0.8
+            center_y: root.height * 0.3
+            color: 1.2, 0, 0.5, 0.8
+            outline_width: self.font_size * 0.05
+            outline_color: 0, 0, 0, 1
+            on_press: root.blank()

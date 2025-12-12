@@ -1,0 +1,42 @@
+<SerialInputScreen>
+    name: "serial"
+
+    FloatLayout:
+
+        Label:
+            text: "Type Odrive Serial Number:"
+            size_hint: None, None
+            font_size: 35
+            bold: True
+            center_x: root.width *0.2
+            center_y: root.height *0.5
+            color:1, 1, 1, 1
+            outline_width: self.font_size *0.1
+            outline_color:0, 0, 0, 1
+
+        TextInput:
+            id: serial_input
+            multiline: False
+            font_size: 35
+            bold: True
+            size: 60, 25
+            center_x: root.width *0.45
+            center_y: root.height *0.5
+            color:1, 1, 1, 1
+            outline_width: self.font_size *0.1
+            outline_color:0, 0, 0, 1
+
+        DPEAButton:
+            text: "Continue"
+            size: 90, 75
+            font_size: 30
+            bold: True
+            center_x: root.width * .5
+            center_y: root.height * .2
+            color: 1.2, 0, .5, .8
+            outline_width: self.font_size * 0.05
+            outline_color: 0, 0, 0, 1
+            on_press: root.save_serial()
+
+
+

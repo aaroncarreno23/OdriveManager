@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="pi@172.17.21.2:22 agent (4)" remoteFilesAllowedToDisappearOnAutoupload="false">
+    <serverData>
+      <paths name="pi@172.17.21.2:22 agent">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/tmp/pycharm_project_716" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="pi@172.17.21.2:22 agent (2)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/tmp/pycharm_project_939" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="pi@172.17.21.2:22 agent (3)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/tmp/pycharm_project_390" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="pi@172.17.21.2:22 agent (4)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/pi/aaroncarreno" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>
