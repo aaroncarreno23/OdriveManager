@@ -4,12 +4,12 @@
     FloatLayout:
 
         Label:
-            text: "Type Odrive Serial Number:"
+            text: "Odrive Board:"
             size_hint: None, None
-            font_size: 35
+            font_size: 25
             bold: True
-            center_x: root.width *0.2
-            center_y: root.height *0.5
+            center_x: root.width *0.25
+            center_y: root.height *0.8
             color:1, 1, 1, 1
             outline_width: self.font_size *0.1
             outline_color:0, 0, 0, 1
@@ -17,18 +17,41 @@
         TextInput:
             id: serial_input
             multiline: False
-            font_size: 35
+            font_size: 25
             bold: True
-            size: 60, 25
+            size_hint:(0.35, 0.1)
             center_x: root.width *0.45
-            center_y: root.height *0.5
+            center_y: root.height *0.8
+            color:1, 1, 1, 1
+            outline_width: self.font_size *0.1
+            outline_color:0, 0, 0, 1
+
+        Spinner:
+            id: axis_spinner
+            text: "Axis 0"
+            values: ["Axis 0", "Axis 1"]
+            size_hint: None, None
+            size: 200, 50
+            center_x: root.width * 0.5
+            center_y: root.height * 0.5
+            background_color: 0.2, 0.2, 0.2, 1
+            font_size: 25
+
+        Label:
+            id: serial_label
+            text: " "
+            size_hint: None, None
+            font_size: 25
+            bold: True
+            center_x: root.width *0.5
+            center_y: root.height *0.4
             color:1, 1, 1, 1
             outline_width: self.font_size *0.1
             outline_color:0, 0, 0, 1
 
         DPEAButton:
             text: "Continue"
-            size: 90, 75
+            size: 100, 70
             font_size: 30
             bold: True
             center_x: root.width * .5

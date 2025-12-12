@@ -61,34 +61,61 @@ Window.clearcolor = (0.4, 0.5, 0.2, 1) #white
 
 class MyApp(App):
 
-    def __init__(self, odrive_manager, **kwargs):
-        super(MyApp, self).__init__(**kwargs)
-        self.odrive_manager = odrive_manager
-
     def build(self):
         self.title = "class ODriveManager"
+        self.odrive_manager = None
+        sm = ScreenManager()
+        sm.add_widget(SerialInputScreen(name='serial'))
+        sm.add_widget(MainScreen(name='main', odrive_manager=None))
+        sm.add_widget(SlidersScreen(name='sliders_screen', odrive_manager=None))
+        sm.add_widget(ButtonsScreen(name='buttons_screen', odrive_manager=None))
+        sm.add_widget(InputsScreen(name='inputs_screen', odrive_manager=None))
         return sm
+
 
 class SerialInputScreen(Screen):
     def save_serial(self):
         serial = self.ids.serial_input.text.strip()
+        axis_text = self.ids.axis_spinner.text
+        axis_num = 0 if axis_text == "Axis 0" else 1
         if serial:
-            self.manager.odrive_manager = ODriveManager(serial)
-            self.manager.current = 'main_screen'
+            print(f"Odrive {serial} found...")
+            sleep(1)
+            print(f"Connecting to {serial}...")
+            try:
+                new_manager = ODriveManager(serial_number=serial, axis_number=axis_num)
+                if new_manager.odrive_board:
+                    print("Connection Successful")
+                    App.get_running_app().odrive_manager = new_manager
+                    self.manager.get_screen('main').odrive_manager = new_manager
+                    self.manager.get_screen('sliders_screen').odrive_manager = new_manager
+                    self.manager.get_screen('buttons_screen').odrive_manager = new_manager
+                    self.manager.get_screen('inputs_screen').odrive_manager = new_manager
+                    self.manager.current = 'main'
+                else:
+                    print("Could not find ODrive. Check connection/serial.")
+
+            except Exception as e:
+                print(f"Error during connection: {e}")
 
 
 class ODriveManager:
-    def __init__(self, serial_number=None):
+    def __init__(self, serial_number=None, axis_number=0):
         self.serial_number = serial_number
-        self.odrive_board0 = None
-        self.odrive_motor1 = None
-        self.initialize_odrives()
-        self.reboot()
-        self.initialize_odrives()
-        if self.odrive_board0 and self.odrive_motor1:
-            self.configure_calibrate_home_odrives()
-        else:
-            print("ODrive initialization failed. Skipping configuration and homing")
+        self.odrive_board = None
+        self.odrive_motor = None
+        try:
+            self.axis_number = int(str(axis_number).replace("Axis ", ""))
+        except:
+            self.axis_number = 0
+        if self.serial_number:
+            self.initialize_odrives()
+            #self.reboot()
+            #self.initialize_odrives()
+            if self.odrive_board and self.odrive_motor:
+                self.configure_calibrate_home_odrives()
+            else:
+                print("ODrive initialization failed. Skipping configuration and homing")
 
         signal.signal(signal.SIGINT, self.signal_handler)
         signal.signal(signal.SIGTERM, self.signal_handler)
@@ -99,17 +126,22 @@ class ODriveManager:
         sys.exit(1)
 
     def safe_shutdown(self):
-        self.odrive_motor1.set_pos(5)
+        self.odrive_motor.set_pos(5)
         print("Shutting down ODriveManager")
 
     def initialize_odrives(self):
         try:
-            odrv0 = self.serial_number
-            self.odrive_board0 = find_odrive(odrv0)
-            self.odrive_board0.config.enable_brake_resistor = True
+            self.odrive_board = find_odrive(serial_number=self.serial_number)
+            self.odrive_board.config.enable_brake_resistor = True
             print("Break resistor has been enabled")
-            assert self.odrive_board0.config.enable_brake_resistor is True, "Check faulty brake resistor."
-            self.odrive_motor1 = ODriveAxis(self.odrive_board0.axis0)
+            assert self.odrive_board.config.enable_brake_resistor is True, "Check faulty brake resistor."
+            if self.axis_number == 0:
+                print("Axis 0")
+                self.odrive_motor = ODriveAxis(self.odrive_board.axis0)
+            else:
+                print("Axis 1")
+                self.odrive_motor = ODriveAxis(self.odrive_board.axis1)
+
             print("Odrive initialized successfully")
             #print("Digital inputs:")
             #print(digital_read(self.odrive_board0, 2))
@@ -118,35 +150,35 @@ class ODriveManager:
 
     def configure_calibrate_home_odrives(self):
         try:
-            self.odrive_motor1.set_vel_gain(0.05)
-            self.odrive_motor1.axis.controller.config.pos_gain = 20
-            self.odrive_motor1.axis.motor.config.torque_lim = 10
-            self.odrive_motor1.set_calibration_current(10)
-            self.odrive_motor1.set_vel_limit(4)
+            self.odrive_motor.set_vel_gain(0.05)
+            self.odrive_motor.axis.controller.config.pos_gain = 20
+            self.odrive_motor.axis.motor.config.torque_lim = 10
+            self.odrive_motor.set_calibration_current(10)
+            self.odrive_motor.set_vel_limit(4)
             print("ODrive configuration completed.")
 
-            if not self.odrive_motor1.is_calibrated():
-                print("calibrating OdriveMotor0...")
-                self.odrive_motor1.calibrate()
-            self.odrive_motor1.wait_for_motor_to_stop()
-            print("ODriveMotor0 calibration completed.")
+            if not self.odrive_motor.is_calibrated():
+                print("calibrating OdriveMotor...")
+                self.odrive_motor.calibrate()
+            self.odrive_motor.wait_for_motor_to_stop()
+            print("ODriveMotor calibration completed.")
 
-            print("Homing ODriveMotor0...")
-            self.odrive_motor1.home_with_endstop(2,0,2)
-            self.odrive_motor1.wait_for_motor_to_stop()
-            self.odrive_motor1.set_home()
-            self.odrive_motor1.set_pos(1)
+            print("Homing ODriveMotor...")
+            self.odrive_motor.home_with_endstop(2,0,2)
+            self.odrive_motor.wait_for_motor_to_stop()
+            self.odrive_motor.set_home()
+            self.odrive_motor.set_pos(1)
             print("ODrive homing completed.")
 
         except Exception as e:
             print(f"Error setting ODrive(s): {e}")
 
     def home(self):
-        print("Homing ODriveMotor0...")
-        self.odrive_motor1.home_with_endstop(2, 0, 2)
-        self.odrive_motor1.wait_for_motor_to_stop()
-        self.odrive_motor1.set_home()
-        self.odrive_motor1.set_pos(1)
+        print("Homing ODriveMotor...")
+        self.odrive_motor.home_with_endstop(2, 0, 2)
+        self.odrive_motor.wait_for_motor_to_stop()
+        self.odrive_motor.set_home()
+        self.odrive_motor.set_pos(1)
         print("ODrive homing completed.")
 
     def initialize_and_cch(self):
@@ -160,15 +192,10 @@ class ODriveManager:
 
     def reboot(self):
         try:
-            odrive_helpers_2.reboot_odrive(self.odrive_board0)
-            print("ODriveBoard0.")
+            odrive_helpers_2.reboot_odrive(self.odrive_board)
+            print("ODriveBoard.")
         except Exception as e:
             print(f"Error reboot ODrive(s): {e}")
-
-odrive_manager = ODriveManager()
-sm = ScreenManager()
-odrive_board0 = odrive_manager.odrive_board0
-odrive_motor1 = odrive_manager.odrive_motor1
 
 class MainScreen(Screen):
 
@@ -181,22 +208,22 @@ class MainScreen(Screen):
 
     def quit_main(self):
         try:
-            self.odrive_manager.odrive_motor1.set_pos(5)
+            self.odrive_manager.odrive_motor.set_pos(5)
             print("ODrives getting put to sleep...")
         finally:
             print("Exiting App...")
-            MyApp(odrive_manager=odrive_manager).stop()
+            MyApp().stop()
 
     def to_sliders(self):
-        sm.current = "sliders_screen"
+        self.manager.current = "sliders_screen"
         return
 
     def to_buttons(self):
-        sm.current = "buttons_screen"
+        self.manager.current = "buttons_screen"
         return
 
     def to_inputs(self):
-        sm.current = "inputs_screen"
+        self.manager.current = "inputs_screen"
         return
 
 class InputsScreen(Screen):
@@ -208,16 +235,16 @@ class InputsScreen(Screen):
         pass
 
     def to_menu(self):
-        sm.current = "main"
+        self.manager.current = "main"
         return
 
     def quit_main(self):
         try:
-            self.odrive_manager.odrive_motor1.set_pos(5)
+            self.odrive_manager.odrive_motor.set_pos(5)
             print("ODrives getting put to sleep...")
         finally:
             print("Exiting App...")
-            MyApp(odrive_manager=odrive_manager).stop()
+            MyApp().stop()
 
 class SlidersScreen(Screen):
 
@@ -228,13 +255,13 @@ class SlidersScreen(Screen):
     def set_torque_value(self, slider, value):
         torque_value = value
         self.ids.torque_lim_label.text = f"Torque Limit: {value}"
-        self.odrive_manager.odrive_motor1.axis.motor.config.torque_lim = torque_value
+        self.odrive_manager.odrive_motor.axis.motor.config.torque_lim = torque_value
         print(f"Torque Limit: {value}")
 
     def set_pos(self, slider, value):
         pos_value = value
         self.ids.pos_label.text = f"Pos: {value: .1f}"
-        self.odrive_manager.odrive_motor1.set_pos(pos_value)
+        self.odrive_manager.odrive_motor.set_pos(pos_value)
         print(f"Pos: {value: .1f}")
 
     def set_vel_lim(self):
@@ -253,16 +280,16 @@ class SlidersScreen(Screen):
         pass
 
     def to_menu(self):
-        sm.current = "main"
+        self.manager.current = "main"
         return
 
     def quit_main(self):
         try:
-            self.odrive_manager.odrive_motor1.set_pos(5)
+            self.odrive_manager.odrive_motor.set_pos(5)
             print("ODrives getting put to sleep...")
         finally:
             print("Exiting App...")
-            MyApp(odrive_manager=odrive_manager).stop()
+            MyApp().stop()
 
 class ButtonsScreen(Screen):
 
@@ -272,11 +299,11 @@ class ButtonsScreen(Screen):
 
     def reboot(self):
         try:
-            self.odrive_manager.odrive_motor1.set_pos(5)
+            self.odrive_manager.odrive_motor.set_pos(5)
             sleep(1)
-            self.odrive_manager.odrive_motor1.wait_for_motor_to_stop()
+            self.odrive_manager.odrive_motor.wait_for_motor_to_stop()
             Clock.schedule_once(lambda dt: self.odrive_manager.initialize_and_cch(), 10)
-            odrive_helpers_2.reboot_odrive(self.odrive_manager.odrive_board0)
+            odrive_helpers_2.reboot_odrive(self.odrive_manager.odrive_board)
             print("OdriveBoard0.")
             #Clock.schedule_once(lambda dt: self.odrive_manager.initialize_and_cch(), 10)
 
@@ -285,7 +312,7 @@ class ButtonsScreen(Screen):
 
     def digital_read_pin(self):
         try:
-            print(digital_read(self.odrive_manager.odrive_board0, 2))
+            print(digital_read(self.odrive_manager.odrive_board, 2))
         except Exception as e:
             print(f"Error reading pin 2: {e}")
 
@@ -300,17 +327,17 @@ class ButtonsScreen(Screen):
 
     def pre_calibrate(self):
         try:
-            if not self.odrive_manager.odrive_motor1.is_calibrated():
+            if not self.odrive_manager.odrive_motor.is_calibrated():
                 print("calibrating odrive...")
-                self.odrive_manager.odrive_motor1.calibrate()
-            self.odrive_manager.odrive_motor1.wait_for_motor_to_stop()
+                self.odrive_manager.odrive_motor.calibrate()
+            self.odrive_manager.odrive_motor.wait_for_motor_to_stop()
 
-            self.odrive_manager.odrive_motor1.motor.config.pre_calibrated = True
-            self.odrive_manager.odrive_motor1.wait_for_motor_to_stop()
-            self.odrive_manager.odrive_motor1.config.startup_encoder_offset_calibration = True
-            self.odrive_manager.odrive_motor1.wait_for_motor_to_stop()
-            self.odrive_manager.odrive_motor1.config.startup_closed_loop_control = True
-            self.odrive_manager.odrive_motor1.wait_for_motor_to_stop()
+            self.odrive_manager.odrive_motor.motor.config.pre_calibrated = True
+            self.odrive_manager.odrive_motor.wait_for_motor_to_stop()
+            self.odrive_manager.odrive_motor.config.startup_encoder_offset_calibration = True
+            self.odrive_manager.odrive_motor.wait_for_motor_to_stop()
+            self.odrive_manager.odrive_motor.config.startup_closed_loop_control = True
+            self.odrive_manager.odrive_motor.wait_for_motor_to_stop()
             print("odrive PRE-CALIBRATED")
         except Exception as e:
             print(f"Error during pre-calibration {e}")
@@ -325,28 +352,22 @@ class ButtonsScreen(Screen):
         pass
 
     def to_menu(self):
-        sm.current = "main"
+        self.manager.current = "main"
         return
 
     def quit_main(self):
         try:
-            self.odrive_manager.odrive_motor1.set_pos(5)
+            self.odrive_manager.odrive_motor.set_pos(5)
             print("ODrives getting put to sleep...")
         finally:
             print("Exiting App...")
-            MyApp(odrive_manager=odrive_manager).stop()
+            MyApp().stop()
 
-sm.add_widget(SerialInputScreen(name = 'serial'))
-sm.add_widget(MainScreen(name = 'main', odrive_manager=odrive_manager))
-sm.add_widget(SlidersScreen(name = 'sliders_screen', odrive_manager=odrive_manager))
-sm.add_widget(ButtonsScreen(name = 'buttons_screen', odrive_manager=odrive_manager))
-sm.add_widget(InputsScreen(name = 'inputs_screen', odrive_manager=odrive_manager))
-
-try:
-    MyApp(odrive_manager=odrive_manager).run()
-except Exception as e:
-    odrive_manager.safe_shutdown()
-    raise e
+if __name__ == '__main__':
+    try:
+        MyApp().run()
+    except Exception as e:
+        print(f"Critical Error: {e}")
 
 #print error and clear error button
 
