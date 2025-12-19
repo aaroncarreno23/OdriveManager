@@ -72,7 +72,6 @@ class MyApp(App):
         sm.add_widget(InputsScreen(name='inputs_screen', odrive_manager=None))
         return sm
 
-
 class SerialInputScreen(Screen):
     def save_serial(self):
         serial = self.ids.serial_input.text.strip()
@@ -304,7 +303,7 @@ class ButtonsScreen(Screen):
             self.odrive_manager.odrive_motor.wait_for_motor_to_stop()
             Clock.schedule_once(lambda dt: self.odrive_manager.initialize_and_cch(), 10)
             odrive_helpers_2.reboot_odrive(self.odrive_manager.odrive_board)
-            print("OdriveBoard0.")
+            print("OdriveBoard.")
             #Clock.schedule_once(lambda dt: self.odrive_manager.initialize_and_cch(), 10)
 
         except Exception as e:
@@ -331,25 +330,22 @@ class ButtonsScreen(Screen):
                 print("calibrating odrive...")
                 self.odrive_manager.odrive_motor.calibrate()
             self.odrive_manager.odrive_motor.wait_for_motor_to_stop()
-
             self.odrive_manager.odrive_motor.motor.config.pre_calibrated = True
-            self.odrive_manager.odrive_motor.wait_for_motor_to_stop()
             self.odrive_manager.odrive_motor.config.startup_encoder_offset_calibration = True
-            self.odrive_manager.odrive_motor.wait_for_motor_to_stop()
             self.odrive_manager.odrive_motor.config.startup_closed_loop_control = True
-            self.odrive_manager.odrive_motor.wait_for_motor_to_stop()
+            self.odrive_manager.odrive_motor.save_configuration()
             print("odrive PRE-CALIBRATED")
         except Exception as e:
             print(f"Error during pre-calibration {e}")
 
     def save_config(self):
-        pass
+        self.odrive_manager.save_configuration()
 
     def blank(self):
         pass
 
     def idle(self):
-        pass
+        self.odrive_manager.odrive_board.odrive_motor.requested_state = AxisState.IDLE
 
     def to_menu(self):
         self.manager.current = "main"
@@ -368,6 +364,15 @@ if __name__ == '__main__':
         MyApp().run()
     except Exception as e:
         print(f"Critical Error: {e}")
+
+        """
+        make so you can disconnect odrive then go back to first screen
+        and type new odrive to connect to. 
+        
+        add more/necessary sliders and buttons.
+        
+        
+        """
 
 #print error and clear error button
 
