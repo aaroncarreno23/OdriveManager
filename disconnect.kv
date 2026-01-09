@@ -1,0 +1,65 @@
+<SerialInputScreen>
+    name: "serial"
+
+    FloatLayout:
+
+        Label:
+            text: "By continuing you are deciding to"
+            size_hint: None, None
+            font_size: 25
+            bold: True
+            center_x: root.width *0.5
+            center_y: root.height *0.8
+            color:1, 1, 1, 1
+            outline_width: self.font_size *0.1
+            outline_color:0, 0, 0, 1
+
+        Label:
+            text: "disconnect from the current odrive."
+            size_hint: None, None
+            font_size: 25
+            bold: True
+            center_x: root.width *0.5
+            center_y: root.height *0.7
+            color:1, 1, 1, 1
+            outline_width: self.font_size *0.1
+            outline_color:0, 0, 0, 1
+
+        Label:
+            text: "Are you sure you want to do this?"
+            size_hint: None, None
+            font_size: 25
+            bold: True
+            center_x: root.width *0.5
+            center_y: root.height *0.7
+            color:1, 1, 1, 1
+            outline_width: self.font_size *0.1
+            outline_color:0, 0, 0, 1
+
+        DPEAButton:
+
+        DPEAButton:
+            id:quit
+            text:"X"
+            size:30, 30
+            font_size:30
+            bold: True
+            center_x: root.width * 0.95
+            center_y: root.height * 0.95
+            color: 1.2, 0, 0.5, 1
+            outline_width: self.font_size * 0.1
+            outline_color: 0, 0, 0, 1
+            on_press: root.quit_main()
+
+        DPEAButton:
+            id:menu
+            text: "Menu"
+            size: 65, 65
+            font_size: 20
+            bold: True
+            center_x: root.width * .9
+            center_y: root.height * .1
+            color: 1.2, 0, .5, .8
+            outline_width: self.font_size * 0.05
+            outline_color: 0, 0, 0, 1
+            on_press: root.to_menu()
