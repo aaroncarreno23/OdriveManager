@@ -4,6 +4,14 @@ import sys
 import time
 import os
 
+from kivy.config import Config
+Config.set('kivy', 'keyboard_mode', 'systemanddock')
+
+src = '/home/pi/Documents/OdriveManager/OdriveManager/simple.json'
+dest = '/home/pi/Documents/DPI_Computer_UI/dpi_venv/lib/python3.9/site-packages/kivy/data/keyboards'
+os.system(f'cp {src} {dest}')
+Config.set('kivy', 'keyboard_layout', 'simple')
+
 from IPython.core.crashhandler import crash_handler_lite
 from kivy.app import App
 from kivy.lang import Builder
@@ -43,14 +51,6 @@ from odrive_helpers_2 import *
 from odrive_helpers_2 import digital_read
 from pidev.kivy.PassCodeScreen import PassCodeScreen
 from pidev.kivy.PauseScreen import PauseScreen
-
-from kivy.config import Config
-Config.set('kivy', 'keyboard_mode', 'systemanddock')
-
-src = '/home/pi/Documents/OdriveManager/OdriveManager/simple.json'
-dest = '/home/pi/Documents/DPI_Computer_UI/dpi_venv/lib/python3.9/site-packages/kivy/data/keyboards'
-os.system(f'cp {src} {dest}')
-Config.set('kivy', 'keyboard_layout', 'simple')
 
 Builder.load_file('main.kv')
 print("main.kv loaded.")
