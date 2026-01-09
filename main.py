@@ -26,6 +26,8 @@ from kivy.clock import Clock
 from kivy.animation import Animation
 from functools import partial
 from kivy.config import Config, key
+from kivy.config import Config
+Config.set('kivy', 'keyboard_mode', 'systemanddock')
 from kivy.core.window import Window
 from pidev.kivy.DPEAButton import DPEAButton
 from pidev.kivy import PauseScreen
