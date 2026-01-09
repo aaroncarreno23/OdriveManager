@@ -99,6 +99,13 @@ class SerialInputScreen(Screen):
             except Exception as e:
                 print(f"Error during connection: {e}")
 
+    def quit_main(self):
+        try:
+            self.odrive_manager.odrive_motor.set_pos(5)
+        finally:
+            print("Exiting App...")
+            MyApp().stop()
+
 
 class ODriveManager:
     def __init__(self, serial_number=None, axis_number=0):
