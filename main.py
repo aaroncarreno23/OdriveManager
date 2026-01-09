@@ -46,6 +46,10 @@ from odrive_helpers_2 import digital_read
 from pidev.kivy.PassCodeScreen import PassCodeScreen
 from pidev.kivy.PauseScreen import PauseScreen
 
+src = '/home/pi/Documents/OdriveManager/OdriveManager/simple.json'
+dest = '/home/pi/Documents/DPI_Computer_UI/dpi_venv/lib/python3.9/site-packages/kivy/data/keyboards'
+os.system(f'cp {src} {dest}')
+
 Builder.load_file('main.kv')
 print("main.kv loaded.")
 Builder.load_file('sliders.kv')

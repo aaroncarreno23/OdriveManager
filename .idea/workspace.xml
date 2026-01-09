@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3d69f877-ae6e-40fc-a463-79f701c31471" name="Changes" comment="notes">
+    <list default="true" id="3d69f877-ae6e-40fc-a463-79f701c31471" name="Changes" comment="quit for serial screen">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -128,7 +128,9 @@
       <workItem from="1765384099541" duration="13636000" />
       <workItem from="1765556840471" duration="13733000" />
       <workItem from="1766161240730" duration="278000" />
-      <workItem from="1767978321513" duration="1766000" />
+      <workItem from="1767978321513" duration="1836000" />
+      <workItem from="1767980345995" duration="79000" />
+      <workItem from="1767980474881" duration="3854000" />
     </task>
     <task id="LOCAL-00001" summary="setting up for class ODriveManager">
       <option name="closed" value="true" />
@@ -154,7 +156,23 @@
       <option name="project" value="LOCAL" />
       <updated>1766161358388</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="notes">
+      <option name="closed" value="true" />
+      <created>1767980294546</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1767980294546</updated>
+    </task>
+    <task id="LOCAL-00005" summary="quit for serial screen">
+      <option name="closed" value="true" />
+      <created>1767983872648</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1767983872648</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -175,7 +193,8 @@
     <MESSAGE value="setting up for class ODriveManager" />
     <MESSAGE value="now you are able to enter serial code and axis to control desired motor on desired board." />
     <MESSAGE value="notes" />
-    <option name="LAST_COMMIT_MESSAGE" value="notes" />
+    <MESSAGE value="quit for serial screen" />
+    <option name="LAST_COMMIT_MESSAGE" value="quit for serial screen" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/PythonProject$kivy_test.coverage" NAME="kivy_test Coverage Results" MODIFIED="1761925945385" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
