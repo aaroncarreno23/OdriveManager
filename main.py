@@ -26,8 +26,6 @@ from kivy.clock import Clock
 from kivy.animation import Animation
 from functools import partial
 from kivy.config import Config, key
-from kivy.config import Config
-Config.set('kivy', 'keyboard_mode', 'systemanddock')
 from kivy.core.window import Window
 from pidev.kivy.DPEAButton import DPEAButton
 from pidev.kivy import PauseScreen
@@ -46,9 +44,13 @@ from odrive_helpers_2 import digital_read
 from pidev.kivy.PassCodeScreen import PassCodeScreen
 from pidev.kivy.PauseScreen import PauseScreen
 
+from kivy.config import Config
+Config.set('kivy', 'keyboard_mode', 'systemanddock')
+
 src = '/home/pi/Documents/OdriveManager/OdriveManager/simple.json'
 dest = '/home/pi/Documents/DPI_Computer_UI/dpi_venv/lib/python3.9/site-packages/kivy/data/keyboards'
 os.system(f'cp {src} {dest}')
+Config.set('kivy', 'keyboard_layout', 'simple')
 
 Builder.load_file('main.kv')
 print("main.kv loaded.")
