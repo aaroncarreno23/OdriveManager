@@ -400,3 +400,5 @@ if __name__ == '__main__':
 #<odrv>.<axis>.config.startup_encoder_offset_calibration = True
 #<odrv>.<axis>.config.startup_closed_loop_control = True
 #<odrv>.save_configuration()
+
+#IF WORKED ON, GIT COMMIT HERE, THEN GIT PULL IN PI DEPOSITORY
